@@ -1,0 +1,42 @@
+# ======================
+# Archivos de Python
+# ======================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+
+# ======================
+# Entornos virtuales
+# ======================
+.venv/
+env/
+venv/
+ENV/
+
+# ======================
+# Archivos de sistema
+# ======================
+.DS_Store
+Thumbs.db
+
+
+# ======================
+# Imágenes de prueba y resultados
+# ======================
+#test_images/*
+#test_images/.gitignore   # Permitimos solo el .gitignore
+
+# ======================
+# Archivos de resultados temporales
+# ======================
+*.log
+*.tmp
+
+# ======================
+# Cachés de librerías
+# ======================
+.ipynb_checkpoints/
+.pytest_cache/
+.mypy_cache/

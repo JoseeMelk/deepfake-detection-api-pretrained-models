@@ -1,0 +1,21 @@
+# requirements.txt
+# Lista de dependencias para el proyecto de detección de deepfakes con FastAPI y PyTorch
+fastapi==0.116.1
+hf-xet==1.1.9
+huggingface-hub==0.34.4
+opencv-python==4.12.0.88
+pillow==11.3.0
+python-multipart==0.0.20
+torchsummary==1.5.1
+#torch==2.7.1+cu118
+#torchvision==0.22.1+cu118
+transformers==4.56.0
+uvicorn==0.35.0
+
+# Opcional: solo si planeas usar CUDA (instálalo aparte según tu GPU)
+# torch==2.1.0+cu118
+# torchvision==0.16.0+cu118
+# -f https://download.pytorch.org/whl/torch_stable.html
+
+#pip install torchvision==0.22.1+cu118 torchaudio==2.7.1+cu118 --index-url https://download.pytorch.org/whl/cu118
+

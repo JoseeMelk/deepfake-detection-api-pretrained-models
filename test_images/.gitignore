@@ -1,0 +1,5 @@
+reporte_visual/
+resultados/
+*.*
+!.gitignore
+!example.png

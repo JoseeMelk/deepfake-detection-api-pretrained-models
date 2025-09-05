@@ -1,0 +1,3 @@
+recortar_rostro/*.py
+!recortar_rostro/test_recorte_real.py
+!recortar_rostro/test_calidad_deteccion.py
