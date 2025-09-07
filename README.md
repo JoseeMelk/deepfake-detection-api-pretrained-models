@@ -141,8 +141,16 @@ Parámetros (form-data):
 - `recortar_cara`: `true/false` (opcional)
 - `device`: `"cpu"` o `"cuda"`
 
----
-
+Ejemplo respuesta:
+```json
+{
+  "result": {
+    "real": 0.12,
+    "fake": 0.88,
+    "prediction": "fake"
+  }
+}
+```
 ---
 
 ### 🔹 Recortar Cara – Detección
