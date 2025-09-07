@@ -143,6 +143,17 @@ Parámetros (form-data):
 
 ---
 
+---
+
+### 🔹 Recortar Cara – Detección
+**POST** `/cut_face`  
+Sube una imagen y se envía, te devuelve la imagen procesada.
+
+Parámetros (form-data):
+- `file`: Imagen (`.png`, `.jpg`, `.jpeg`)
+
+---
+
 ## 📜 Créditos y fuentes
 
 Este proyecto hace uso y adaptación de:
