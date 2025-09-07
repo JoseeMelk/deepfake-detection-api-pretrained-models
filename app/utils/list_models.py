@@ -15,6 +15,11 @@ def list_available_models(model_type: str):
     models = []
     for fname in os.listdir(model_dir):
         fpath = os.path.join(model_dir, fname)
+
+        # 🔹 Ignorar archivos ocultos y de git
+        if fname.startswith(".") or fname.lower().startswith("git"):
+            continue
+
         if os.path.isfile(fpath):
             models.append({
                 "filename": fname,
