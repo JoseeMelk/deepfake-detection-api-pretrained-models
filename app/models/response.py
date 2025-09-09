@@ -1,5 +1,6 @@
 from pydantic import BaseModel, Field
 from typing import List
+from PIL import Image
 
 class PredictionResult(BaseModel):
     real: float = Field(..., ge=0, le=1, description="Probabilidad de que sea real (0–1)")
@@ -17,3 +18,4 @@ class ModelInfo(BaseModel):
 
 class AvailableModelsResponse(BaseModel):
     available_models: List[ModelInfo]
+    

@@ -1,8 +1,11 @@
 from fastapi import APIRouter, UploadFile, File, Form
+from fastapi.responses import StreamingResponse
 import tempfile
 import os
+import io
 from app.controllers.huggingface_controller import predict_image
 from app.controllers.xception_controller import predict_xception, list_xception_models
+from app.controllers.cut_face_controller import cut_face
 from app.models.response import ModelsResponse, AvailableModelsResponse
 
 router = APIRouter(tags=["Deepfake Detection"])
@@ -55,3 +58,22 @@ async def detect_xception(
 
     return {"result": result}
 
+@router.post("/cut_face")
+async def cut_out_face(
+    file: UploadFile = File(...)
+):
+    ext = os.path.splitext(file.filename)[-1].lower()  # ".png", ".jpg", etc.
+    with tempfile.NamedTemporaryFile(delete=False, suffix=ext) as tmp:
+        contents = await file.read()
+        tmp.write(contents)
+        tmp_path = tmp.name
+
+    # Ejecutar recorte
+    result_image = cut_face(tmp_path)
+
+    # Convertir la imagen resultante en un stream
+    img_bytes = io.BytesIO()
+    result_image.save(img_bytes, format="PNG")
+    img_bytes.seek(0)
+
+    return StreamingResponse(img_bytes, media_type="image/png")

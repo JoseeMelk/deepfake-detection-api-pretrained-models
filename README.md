@@ -141,6 +141,25 @@ Parámetros (form-data):
 - `recortar_cara`: `true/false` (opcional)
 - `device`: `"cpu"` o `"cuda"`
 
+Ejemplo respuesta:
+```json
+{
+  "result": {
+    "real": 0.12,
+    "fake": 0.88,
+    "prediction": "fake"
+  }
+}
+```
+---
+
+### 🔹 Recortar Cara – Detección
+**POST** `/cut_face`  
+Sube una imagen y se envía, te devuelve la imagen procesada.
+
+Parámetros (form-data):
+- `file`: Imagen (`.png`, `.jpg`, `.jpeg`)
+
 ---
 
 ## 📜 Créditos y fuentes
