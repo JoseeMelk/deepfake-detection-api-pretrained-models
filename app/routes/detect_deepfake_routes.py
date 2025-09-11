@@ -34,13 +34,8 @@ async def available_models():
     """
     Lista los pesos disponibles para el modelo Xception.
     """
-    model_type = "xception"
     models = list_xception_models()
-
-    if models is None:
-        return {"error": f"No existe la carpeta {model_type}"}
-
-    return {"available_models": models}
+    return AvailableModelsResponse(available_models=models)
 
 @router.post("/xception/detect", response_model=ModelsResponse)
 async def detect_xception(

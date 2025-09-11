@@ -128,6 +128,7 @@ Ejemplo respuesta:
   ]
 }
 ```
+Si no hay pesos disponibles retorna vacio "[]"
 
 ---
 

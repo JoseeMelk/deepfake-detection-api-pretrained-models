@@ -5,6 +5,7 @@ from app.utils.cut_out_face import cut_out_face
 from app.utils.get_device import get_device
 from app.utils.list_models import list_available_models
 from app.models.models import model_selection
+from app.models.response import ModelInfo
 
 # Normalización usada en Xception
 transform = transforms.Compose([
@@ -17,8 +18,12 @@ transform = transforms.Compose([
 _loaded_models = {}
 
 def list_xception_models():
-    """Lista los pesos disponibles para el modelo Xception."""
-    return list_available_models("xception")
+    """Convierte los resultados de list_available_models en objetos ModelInfo."""
+    raw_models = list_available_models("xception")
+    if not raw_models:
+        return []
+    
+    return [ModelInfo(**m) for m in raw_models]
 
 def load_xception_model(weight_path: str, device: torch.device):
     """Carga el modelo desde weights y lo guarda en cache."""
