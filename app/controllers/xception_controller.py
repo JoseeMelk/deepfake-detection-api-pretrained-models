@@ -5,7 +5,7 @@ from app.utils.cut_out_face import cut_out_face
 from app.utils.get_device import get_device
 from app.utils.list_models import list_available_models
 from app.models.models import model_selection
-from app.models.response import ModelInfo
+from app.models.response import ModelInfo, PredictionResult
 
 # Normalización usada en Xception
 transform = transforms.Compose([
@@ -66,8 +66,8 @@ def predict_xception(image_path: str, weight_path: str, cut_face: bool = False, 
     }
     pred_class = int(probs.argmax())
 
-    return {
-        "real": round(float(probs[0]), 6),
-        "fake": round(float(probs[1]), 6),
-        "prediction": CLASS_MAP[pred_class],
-    }
+    return PredictionResult(
+        real=round(float(probs[0]), 6),
+        fake=round(float(probs[1]), 6),
+        prediction=CLASS_MAP[pred_class]
+    )

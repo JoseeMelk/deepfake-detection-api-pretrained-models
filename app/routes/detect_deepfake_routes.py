@@ -8,6 +8,7 @@ from app.controllers.xception_controller import predict_xception, list_xception_
 from app.controllers.cut_face_controller import cut_face
 from app.controllers.ensemble_controller import average_probabilities, majority_vote
 from app.models.response import ModelsResponse, AvailableModelsResponse, EnsembleResponse, ModelPrediction
+
 router = APIRouter(tags=["Deepfake Detection"])
 
 @router.post("/huggingface", response_model=ModelsResponse)
@@ -45,7 +46,8 @@ async def detect_xception(
     device: str = Form("cpu")  # "cpu" o "cuda"
 ):
     """
-    Detecta si una imagen es un deepfake utilizando el modelo Xception.
+    Detecta si una imagen es un deepfake utilizando el modelo Xception, se tiene que enviar el nombre del peso
+    a usar y los pesos disponibles se proporcionan en el endpoint /xception/weights.
     """
     ext = os.path.splitext(file.filename)[-1].lower()  # ".png", ".jpg", etc.
     with tempfile.NamedTemporaryFile(delete=False, suffix=ext) as tmp:
@@ -54,10 +56,9 @@ async def detect_xception(
         tmp_path = tmp.name
         
     weight_path = os.path.join("app", "weights", "xception", model_name)
-    
     result = predict_xception(tmp_path, weight_path, cut_face=recortar_cara, device=device)
 
-    return {"result": result}
+    return ModelsResponse(result=result)
 
 @router.post("/cut_face")
 async def cut_out_face(
@@ -90,7 +91,9 @@ async def detect_ensemble(
     device: str = Form("cpu")
 ):
     """
-    Detecta si una imagen es un deepfake utilizando un ensemble de modelos (HuggingFace + todos los Xception disponibles).
+    Detecta si una imagen es un deepfake utilizando un ensemble de modelos (HuggingFace + todos los Xception disponibles)
+    y se retorna las probabilidades de cada peso, y la decisión final basado en la mayoría de votos (predicción) y basado
+    en el promedio de probabilidades.
     """
     ext = os.path.splitext(file.filename)[-1].lower()
     with tempfile.NamedTemporaryFile(delete=False, suffix=ext) as tmp:

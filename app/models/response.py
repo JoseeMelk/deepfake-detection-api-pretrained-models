@@ -10,7 +10,6 @@ class PredictionResult(BaseModel):
 class ModelsResponse(BaseModel):
     result: PredictionResult
     
-    
 class ModelInfo(BaseModel):
     filename: str
     size_bytes: int
