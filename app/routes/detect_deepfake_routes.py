@@ -27,7 +27,7 @@ async def detect_huggingface(
 
     result = predict_image(tmp_path, recortar=recortar_cara, device=device)
 
-    return {"result": result}
+    return ModelsResponse(result=result)
 
 @router.get("/xception/weights", response_model=AvailableModelsResponse)
 async def available_models():

@@ -3,6 +3,7 @@ from PIL import Image
 import torch
 from app.utils.cut_out_face import cut_out_face
 from app.utils.get_device import get_device
+from app.models.response import PredictionResult
 
 MODEL_NAME = "prithivMLmods/deepfake-detector-model-v1"
 processor = AutoImageProcessor.from_pretrained(MODEL_NAME)
@@ -28,8 +29,8 @@ def predict_image(image_path: str, recortar: bool = False, device: str = "cpu") 
         logits = outputs.logits
         probs = torch.softmax(logits, dim=1)[0].cpu()
 
-    return {
-        "fake": float(probs[0]),
-        "real": float(probs[1]),
-        "prediction": id2label[str(torch.argmax(probs).item())]
-    }
+    return PredictionResult(
+        real=float(probs[1]),
+        fake=float(probs[0]),
+        prediction=id2label[str(torch.argmax(probs).item())]
+    )
