@@ -98,6 +98,7 @@ Ejemplo respuesta:
 ```json
 {
   "result": {
+    "model_name": "deepfake-detector-model-v1",
     "real": 0.12,
     "fake": 0.88,
     "prediction": "fake"
@@ -146,6 +147,7 @@ Ejemplo respuesta:
 ```json
 {
   "result": {
+    "model_name": "deepfake_c0_xception.pkl",
     "real": 0.12,
     "fake": 0.88,
     "prediction": "fake"
@@ -184,15 +186,15 @@ Ejemplo respuesta:
     },
     {
       "model_name": "deepfake_c0_xception.pkl",
-      "prediction": "fake",
       "real": 0.001561,
-      "fake": 0.998439
+      "fake": 0.998439,
+      "prediction": "fake"
     },
     {
       "model_name": "ffpp_c23.pth",
-      "prediction": "fake",
       "real": 0.000147,
-      "fake": 0.999853
+      "fake": 0.999853,
+      "prediction": "fake"
     }
   ],
   "final_decision_majority": {
