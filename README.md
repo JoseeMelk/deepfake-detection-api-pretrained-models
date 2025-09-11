@@ -47,7 +47,7 @@ app/
 
 1. Clona el repositorio:
    ```bash
-   git https://github.com/JoseeMelk/deepfake-detection-api-pretrained-models.git
+   git clone https://github.com/JoseeMelk/deepfake-detection-api-pretrained-models.git
    cd deepfake-detection-api-pretrained-models
    ```
 
@@ -162,12 +162,58 @@ Parámetros (form-data):
 
 ---
 
+### 🔹 Todos los pesos – Detección
+**POST** `/ensemble/detect`  
+Sube una imagen y se usaràn todos los pesos disponibles de HuggingFace y Xception para predicción.
+
+Parámetros (form-data):
+- `file`: Imagen (`.png`, `.jpg`, `.jpeg`)
+- `recortar_cara`: `true/false` (opcional, default `false`)
+- `device`: `"cpu"` o `"cuda"`
+
+Ejemplo respuesta:
+```json
+{
+  "results": [
+    {
+      "model_name": "huggingface-deepfake-detector-v1",
+      "prediction": "real",
+      "real": 0.536694347858429,
+      "fake": 0.46330568194389343
+    },
+    {
+      "model_name": "deepfake_c0_xception.pkl",
+      "prediction": "fake",
+      "real": 0.001561,
+      "fake": 0.998439
+    },
+    {
+      "model_name": "ffpp_c23.pth",
+      "prediction": "fake",
+      "real": 0.000147,
+      "fake": 0.999853
+    }
+  ],
+  "final_decision_majority": {
+    "prediction": "fake",
+    "confidence": 0.666667
+  },
+  "final_decision_average": {
+    "prediction": "fake",
+    "confidence": 0.820533
+  }
+}
+```
+---
+
 ## 📜 Créditos y fuentes
 
 Este proyecto hace uso y adaptación de:
 - Modelos de HuggingFace: [deepfake-detector-model-v1](https://huggingface.co/prithivMLmods/deepfake-detector-model-v1)  
 - Pesos de Xception compartidos en: [Google Drive - HongguLiu/Deepfake-Detection](https://drive.google.com/drive/folders/1GNtk3hLq6sUGZCGx8fFttvyNYH8nrQS8)  
 - Código base y arquitecturas de: [HongguLiu/Deepfake-Detection](https://github.com/HongguLiu/Deepfake-Detection)
+
+- En especifico se usan los modelos o redes neuronales [HongguLiu/Deepfake-Detection](https://github.com/HongguLiu/Deepfake-Detection), todo lo de la carpeta network del proyecto
 
 ---
 

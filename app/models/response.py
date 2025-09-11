@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from typing import List
+from typing import List, Dict
 from PIL import Image
 
 class PredictionResult(BaseModel):
@@ -19,3 +19,17 @@ class ModelInfo(BaseModel):
 class AvailableModelsResponse(BaseModel):
     available_models: List[ModelInfo]
     
+class ModelPrediction(BaseModel):
+    model_name: str
+    prediction: str
+    real: float
+    fake: float
+
+class DecisionResult(BaseModel):
+    prediction: str
+    confidence: float
+
+class EnsembleResponse(BaseModel):
+    results: List[ModelPrediction]
+    final_decision_majority: DecisionResult
+    final_decision_average: DecisionResult
