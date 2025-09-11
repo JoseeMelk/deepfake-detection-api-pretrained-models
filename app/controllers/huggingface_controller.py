@@ -13,7 +13,7 @@ id2label = {"0": "fake", "1": "real"}
 
 def predict_image(image_path: str, recortar: bool = False, device: str = "cpu") -> dict:
     image = Image.open(image_path).convert("RGB")
-
+    
     # Recortar cara si se pidió
     if recortar:
         image = cut_out_face(image)
@@ -30,6 +30,7 @@ def predict_image(image_path: str, recortar: bool = False, device: str = "cpu") 
         probs = torch.softmax(logits, dim=1)[0].cpu()
 
     return PredictionResult(
+        model_name="deepfake-detector-model-v1",
         real=float(probs[1]),
         fake=float(probs[0]),
         prediction=id2label[str(torch.argmax(probs).item())]

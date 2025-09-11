@@ -17,6 +17,7 @@ transform = transforms.Compose([
 # Cache de modelo
 _loaded_models = {}
 
+
 def list_xception_models():
     """Convierte los resultados de list_available_models en objetos ModelInfo."""
     raw_models = list_available_models("xception")
@@ -27,8 +28,9 @@ def list_xception_models():
 
 def load_xception_model(weight_path: str, device: torch.device):
     """Carga el modelo desde weights y lo guarda en cache."""
-    if weight_path in _loaded_models:
-        return _loaded_models[weight_path]
+    key = (weight_path, device)
+    if key in _loaded_models:
+        return _loaded_models[key]
 
     model = model_selection("xception", num_out_classes=2, dropout=0.5)
     state_dict = torch.load(weight_path, map_location=device)
@@ -45,7 +47,7 @@ def load_xception_model(weight_path: str, device: torch.device):
     return model
 
 
-def predict_xception(image_path: str, weight_path: str, cut_face: bool = False, device: str = "cpu") -> dict:
+def predict_xception(image_path: str, weight_path: str, cut_face: bool = False, device: str = "cpu", model_name:str = None):
     """Predice si una imagen es real o fake usando Xception."""
     torch_device = get_device(device)
     model = load_xception_model(weight_path, torch_device)
@@ -67,6 +69,7 @@ def predict_xception(image_path: str, weight_path: str, cut_face: bool = False, 
     pred_class = int(probs.argmax())
 
     return PredictionResult(
+        model_name=model_name,
         real=round(float(probs[0]), 6),
         fake=round(float(probs[1]), 6),
         prediction=CLASS_MAP[pred_class]

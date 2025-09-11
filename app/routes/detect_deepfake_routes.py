@@ -7,7 +7,7 @@ from app.controllers.huggingface_controller import predict_image
 from app.controllers.xception_controller import predict_xception, list_xception_models
 from app.controllers.cut_face_controller import cut_face
 from app.controllers.ensemble_controller import average_probabilities, majority_vote
-from app.models.response import ModelsResponse, AvailableModelsResponse, EnsembleResponse, ModelPrediction
+from app.models.response import ModelsResponse, AvailableModelsResponse, EnsembleResponse, PredictionResult
 
 router = APIRouter(tags=["Deepfake Detection"])
 
@@ -56,7 +56,7 @@ async def detect_xception(
         tmp_path = tmp.name
         
     weight_path = os.path.join("app", "weights", "xception", model_name)
-    result = predict_xception(tmp_path, weight_path, cut_face=recortar_cara, device=device)
+    result = predict_xception(tmp_path, weight_path, cut_face=recortar_cara, device=device, model_name=model_name)
 
     return ModelsResponse(result=result)
 
@@ -105,26 +105,16 @@ async def detect_ensemble(
 
     # 🔹 HuggingFace
     hf_result = predict_image(tmp_path, recortar=recortar_cara, device=device)
-    results.append(ModelPrediction(
-        model_name="huggingface-deepfake-detector-v1",
-        prediction=hf_result["prediction"],
-        real=hf_result["real"],
-        fake=hf_result["fake"]
-    ))
+    results.append(hf_result)
 
     # 🔹 Xception (todos los pesos en carpeta)
     xception_models = list_xception_models()
     if xception_models:
         for model_info in xception_models:
-            weight_path = os.path.join("app", "weights", "xception", model_info["filename"])
-            xcep_result = predict_xception(tmp_path, weight_path, cut_face=recortar_cara, device=device)
+            weight_path = os.path.join("app", "weights", "xception", model_info.filename)
+            xcep_result = predict_xception(tmp_path, weight_path, cut_face=recortar_cara, device=device, model_name=model_info.filename)
 
-            results.append(ModelPrediction(
-                model_name=model_info["filename"],
-                prediction=xcep_result["prediction"],
-                real=xcep_result["real"],
-                fake=xcep_result["fake"]
-            ))
+            results.append(xcep_result)
 
     final_decision_majority = majority_vote(results)
     final_decision_average = average_probabilities(results)
